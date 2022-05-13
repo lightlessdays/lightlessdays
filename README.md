@@ -22,8 +22,6 @@
 ### 📈 GitHub Activity Graph:
 ![Dhruv's GitHub activity graph](https://activity-graph.herokuapp.com/graph?username=lightlessdays&hide_border=true&theme=redical)
 
-
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=SethiShreya"></img>
 <p><img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=lightlessdays&show_icons=true&locale=en&layout=compact" alt="lightlessdays" /></p>
 
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=lightlessdays&show_icons=true&locale=en" alt="lightlessdays" /></p>
