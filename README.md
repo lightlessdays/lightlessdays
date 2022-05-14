@@ -1,8 +1,6 @@
-<p align="center"><img src="https://readme-typing-svg.herokuapp.com?color=%235D16B8&size=30&lines=Hello+World;My+name+is+Dhruv;I+am+a;Flutter+developer;and+am+currently;learning+Unity" alt="Image" /></p>
+<p align="left"><img src="https://readme-typing-svg.herokuapp.com?color=%235D16B8&size=30&lines=Hello+World;My+name+is+Dhruv;I+am+a;Flutter+developer;and+am+currently;learning+Unity" alt="Image" /></p>
 
-<h3 align="center">A CS undegrad at University of Delhi</h3>
-
-<p align="center"> <img src="https://komarev.com/ghpvc/?username=lightlessdays&label=Profile%20views&color=0e75b6&style=flat" alt="lightlessdays" /> </p>
+<p align="left"> <img src="https://komarev.com/ghpvc/?username=lightlessdays&label=Profile%20views&color=0e75b6&style=flat" alt="lightlessdays" /> </p>
 
 - 🔭 I’m currently working on **Unity Game Engine**
 
