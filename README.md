@@ -1,4 +1,9 @@
-<p align="center"> ![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%235D16B8&size=30&lines=Hello+World;My+name+is+Dhruv;I+am+Flutter+developer;and+am+currently+learning+Unity)</p>
+![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%235D16B8&size=30&lines=Hello+World;My+name+is+Dhruv;I+am+Flutter+developer;and+am+currently+learning+Unity)
+
+<p align="center">
+    <img src="https://readme-typing-svg.herokuapp.com?color=%235D16B8&size=30&lines=Hello+World;My+name+is+Dhruv;I+am+Flutter+developer;and+am+currently+learning+Unity" alt="Image" width="800" height="600" />
+</p>
+
 
 <h3 align="center">A CS undegrad at University of Delhi</h3>
 
