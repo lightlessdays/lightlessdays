@@ -25,8 +25,8 @@
 
 
 ### Langauges:
-<p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=lightlessdays&show_icons=true&locale=en&layout=compact" alt="lightlessdays" /></p>
+![Dhruv's Languages](https://github-readme-stats.vercel.app/api/top-langs?username=lightlessdays&show_icons=true&locale=en&layout=compact)
 
 
 ### Github Contributions:
-<p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=lightlessdays&" alt="lightlessdays" /></p>
+![Github Contributions](https://github-readme-streak-stats.herokuapp.com/?user=lightlessdays&)
