@@ -1,7 +1,7 @@
 <h1 align="center">Hello World 👋, I'm DHRUV BADAYA</h1>
 <h3 align="center">A CS undegrad at University of Delhi</h3>
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=lightlessdays&label=Profile%20views&color=0e75b6&style=flat" alt="lightlessdays" /> </p>
+<p align="center"> <img src="https://komarev.com/ghpvc/?username=lightlessdays&label=Profile%20views&color=0e75b6&style=flat" alt="lightlessdays" /> </p>
 
 - 🔭 I’m currently working on **Unity Game Engine**
 
