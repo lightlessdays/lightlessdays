@@ -23,7 +23,7 @@
 
 
 
-### Langauges:
+### Languages:
 ![Dhruv's Languages](https://github-readme-stats.vercel.app/api/top-langs?username=lightlessdays&show_icons=true&locale=en&layout=compact)
 
 
