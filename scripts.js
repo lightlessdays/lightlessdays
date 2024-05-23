@@ -1,26 +1,32 @@
 const boilerplateCodes = [
     {
-        type: 'HTML',
-        code: `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>`
+        type: 'Responsive Blog Ad 1',
+        code: `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9887862710118026"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-f5+5t+4z-d1+5q"
+     data-ad-client="ca-pub-9887862710118026"
+     data-ad-slot="3943845360"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>`
     },
     {
-        type: 'CSS',
-        code: `body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-}`
+        type: 'Responsive Blog Ad 2',
+        code: `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9887862710118026"
+     crossorigin="anonymous"></script>
+<!-- Ad Unit 2 For BLOG -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9887862710118026"
+     data-ad-slot="2365593595"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>`
     },
     {
         type: 'JavaScript',
