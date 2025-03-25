@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness Tracker</title>
+  <style>
+    body { text-align: center; font-family: Arial, sans-serif; }
+    video { width: 100%; max-width: 600px; }
+    canvas { position: absolute; top: 0; left: 0; }
+    #feedback { margin-top: 20px; font-size: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>Fitness Tracker</h1>
+  <video id="video" autoplay playsinline></video>
+  <canvas id="canvas"></canvas>
+  <div id="feedback">Start exercising!</div>
+
+  <!-- Add necessary scripts for MediaPipe and pose detection -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose"></script>
+  <script>
+    const videoElement = document.getElementById('video');
+    const canvasElement = document.getElementById('canvas');
+    const feedbackElement = document.getElementById('feedback');
+    const ctx = canvasElement.getContext('2d');
+    
+    // Get video stream from user camera
+    const videoStream = async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' }
+      });
+      videoElement.srcObject = stream;
+    };
+
+    const pose = new Pose.Pose({
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
+    });
+
+    pose.onResults((results) => {
+      ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      canvasElement.width = videoElement.videoWidth;
+      canvasElement.height = videoElement.videoHeight;
+
+      // Draw the pose landmarks on the canvas
+      Pose.drawConnectors(ctx, results.poseLandmarks, Pose.POSE_CONNECTIONS, {
+        color: '#00FF00',
+        lineWidth: 4,
+      });
+      Pose.drawLandmarks(ctx, results.poseLandmarks, { color: '#FF0000', lineWidth: 2 });
+
+      // Send feedback to the back-end
+      if (results.poseLandmarks) {
+        fetch("http://localhost:5000/track", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ landmarks: results.poseLandmarks })
+        })
+        .then(response => response.json())
+        .then(data => {
+          feedbackElement.textContent = `Reps: ${data.reps}, Sets: ${data.sets}, Feedback: ${data.feedback}`;
+        });
+      }
+    });
+
+    videoElement.onloadeddata = () => {
+      pose.initialize().then(() => {
+        videoElement.play();
+        requestAnimationFrame(() => {
+          pose.send({ image: videoElement });
+        });
+      });
+    };
+
+    videoStream();
+  </script>
+</body>
+</html>
