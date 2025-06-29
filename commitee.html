@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Draggable Ordered List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f4f4f4;
+    }
+    h2 {
+      text-align: center;
+    }
+    ol {
+      list-style: decimal;
+      padding-left: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    li {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: move;
+      transition: background-color 0.2s ease;
+    }
+    li.dragging {
+      opacity: 0.5;
+      background-color: #d1eaff;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Reorder Committees by Drag & Drop</h2>
+
+<ol id="sortable-list">
+  <li draggable="true">ALCOM</li>
+  <li draggable="true">AXIOM</li>
+  <li draggable="true">CII-Yi</li>
+  <li draggable="true">CPPR</li>
+  <li draggable="true">CRUX</li>
+  <li draggable="true">DARVIX</li>
+  <li draggable="true">Dracula</li>
+  <li draggable="true">E-CELL</li>
+  <li draggable="true">Ensemble Valhalla</li>
+  <li draggable="true">EXLINK</li>
+  <li draggable="true">FINAX</li>
+  <li draggable="true">FIRE@X</li>
+  <li draggable="true">INFRACOM</li>
+  <li draggable="true">ISEP</li>
+  <li draggable="true">MAXI</li>
+  <li draggable="true">PEACE</li>
+  <li draggable="true">PIXL</li>
+  <li draggable="true">Pride@XL</li>
+  <li draggable="true">Prometheus</li>
+  <li draggable="true">Samarthya</li>
+  <li draggable="true">SAPPHIRE</li>
+  <li draggable="true">SIF</li>
+  <li draggable="true">SIGMA-oikos</li>
+  <li draggable="true">SPIC MACAY</li>
+  <li draggable="true">SPORTSCOM</li>
+  <li draggable="true">TOASTMASTERS</li>
+  <li draggable="true">XLANC</li>
+  <li draggable="true">Xplore - CXO Club</li>
+</ol>
+
+<script>
+  const list = document.getElementById('sortable-list');
+  let draggedItem = null;
+
+  list.addEventListener('dragstart', e => {
+    if (e.target.tagName === 'LI') {
+      draggedItem = e.target;
+      e.target.classList.add('dragging');
+    }
+  });
+
+  list.addEventListener('dragend', e => {
+    if (e.target.tagName === 'LI') {
+      e.target.classList.remove('dragging');
+    }
+  });
+
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(list, e.clientY);
+    if (afterElement == null) {
+      list.appendChild(draggedItem);
+    } else {
+      list.insertBefore(draggedItem, afterElement);
+    }
+  });
+
+  function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('li:not(.dragging)')];
+    return draggableElements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+</script>
+
+</body>
+</html>
