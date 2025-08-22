@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zodiac Horoscope Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #2c0346 0%, #5e35b1 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+        }
+        
+        header {
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            color: #ffcc00;
+            text-shadow: 3px 3px 0 #ff5722;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #ffcc00;
+            margin-bottom: 1rem;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px dashed #ffcc00;
+            animation: pulse 2s infinite;
+        }
+        
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .zodiac-card {
+            background: linear-gradient(135deg, #3949ab 0%, #1a237e 100%);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 3px solid transparent;
+            animation: cardAppear 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .zodiac-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+            border-color: #ffcc00;
+        }
+        
+        .zodiac-icon {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .zodiac-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #ffcc00;
+        }
+        
+        .zodiac-dates {
+            font-size: 0.9rem;
+            color: #e0e0e0;
+        }
+        
+        .result-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem auto;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.5s ease-out;
+            color: #333;
+            border: 4px solid #ffcc00;
+            max-width: 90%;
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .result-icon {
+            font-size: 4rem;
+            margin-right: 1rem;
+            color: #ff5722;
+        }
+        
+        .result-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            color: #3949ab;
+        }
+        
+        .horoscope-text {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #ffcc00 0%, #ff5722 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+        
+        .final-message {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #5e35b1;
+            padding: 1rem;
+            border-top: 2px solid #ffcc00;
+            margin-top: 1.5rem;
+        }
+        
+        .merch-link {
+            color: #ff5722;
+            text-decoration: none;
+            font-weight: bold;
+            background: #ffcc00;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+        
+        .merch-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 87, 34, 0.7);
+        }
+        
+        .play-again {
+            background: linear-gradient(to right, #ff5722, #ffcc00);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-family: 'Fredoka', sans-serif;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
+        }
+        
+        .play-again:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 87, 34, 0.6);
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 rgba(255, 204, 0, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.8); }
+            100% { box-shadow: 0 0 0 rgba(255, 204, 0, 0.4); }
+        }
+        
+        @keyframes cardAppear {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        @media (max-width: 900px) {
+            .zodiac-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 650px) {
+            .zodiac-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .zodiac-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <header>
+            <h1>ZODIAC HOROSCOPE GAME</h1>
+            <div class="subtitle">Find your destiny today!</div>
+            <div class="instructions">Click your zodiac sign to reveal your hilarious horoscope!</div>
+        </header>
+        
+        <div class="zodiac-grid">
+            <div class="zodiac-card" data-sign="aries">
+                <div class="zodiac-icon">♈</div>
+                <div class="zodiac-name">Aries</div>
+                <div class="zodiac-dates">Mar 21 - Apr 19</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="taurus">
+                <div class="zodiac-icon">♉</div>
+                <div class="zodiac-name">Taurus</div>
+                <div class="zodiac-dates">Apr 20 - May 20</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="gemini">
+                <div class="zodiac-icon">♊</div>
+                <div class="zodiac-name">Gemini</div>
+                <div class="zodiac-dates">May 21 - Jun 20</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="cancer">
+                <div class="zodiac-icon">♋</div>
+                <div class="zodiac-name">Cancer</div>
+                <div class="zodiac-dates">Jun 21 - Jul 22</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="leo">
+                <div class="zodiac-icon">♌</div>
+                <div class="zodiac-name">Leo</div>
+                <div class="zodiac-dates">Jul 23 - Aug 22</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="virgo">
+                <div class="zodiac-icon">♍</div>
+                <div class="zodiac-name">Virgo</div>
+                <div class="zodiac-dates">Aug 23 - Sep 22</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="libra">
+                <div class="zodiac-icon">♎</div>
+                <div class="zodiac-name">Libra</div>
+                <div class="zodiac-dates">Sep 23 - Oct 22</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="scorpio">
+                <div class="zodiac-icon">♏</div>
+                <div class="zodiac-name">Scorpio</div>
+                <div class="zodiac-dates">Oct 23 - Nov 21</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="sagittarius">
+                <div class="zodiac-icon">♐</div>
+                <div class="zodiac-name">Sagittarius</div>
+                <div class="zodiac-dates">Nov 22 - Dec 21</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="capricorn">
+                <div class="zodiac-icon">♑</div>
+                <div class="zodiac-name">Capricorn</div>
+                <div class="zodiac-dates">Dec 22 - Jan 19</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="aquarius">
+                <div class="zodiac-icon">♒</div>
+                <div class="zodiac-name">Aquarius</div>
+                <div class="zodiac-dates">Jan 20 - Feb 18</div>
+            </div>
+            
+            <div class="zodiac-card" data-sign="pisces">
+                <div class="zodiac-icon">♓</div>
+                <div class="zodiac-name">Pisces</div>
+                <div class="zodiac-dates">Feb 19 - Mar 20</div>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result">
+            <div class="result-header">
+                <div class="result-icon" id="resultIcon">♈</div>
+                <div class="result-title" id="resultTitle">Aries</div>
+            </div>
+            <div class="horoscope-text" id="horoscopeText">You'll fight literally anyone… except the urge to buy EV merch.</div>
+            <div class="final-message">
+                👉 If the stars wanted you broke, they wouldn't have invented EV merch ✨<br>
+                <a href="https://forms.gle/XduhBj3PGjS9ebCt5" class="merch-link" target="_blank">Click here to get your merch!</a>
+            </div>
+            <button class="play-again" id="playAgain">Try Another Sign</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create stars
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDuration = Math.random() * 3 + 2 + 's';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                starsContainer.appendChild(star);
+            }
+            
+            const zodiacCards = document.querySelectorAll('.zodiac-card');
+            const result = document.getElementById('result');
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const horoscopeText = document.getElementById('horoscopeText');
+            const playAgainBtn = document.getElementById('playAgain');
+            
+            // Zodiac data
+            const zodiacData = {
+                aries: {
+                    icon: "♈",
+                    name: "Aries",
+                    text: "You'll fight literally anyone… except the urge to buy EV merch."
+                },
+                taurus: {
+                    icon: "♉",
+                    name: "Taurus",
+                    text: "EV merch > food. Yeah, we said it."
+                },
+                gemini: {
+                    icon: "♊",
+                    name: "Gemini",
+                    text: "Buy two. One for each personality."
+                },
+                cancer: {
+                    icon: "♋",
+                    name: "Cancer",
+                    text: "Crying in EV merch > crying in pajamas."
+                },
+                leo: {
+                    icon: "♌",
+                    name: "Leo",
+                    text: "Attention won't seek itself. EV merch is your microphone."
+                },
+                virgo: {
+                    icon: "♍",
+                    name: "Virgo",
+                    text: "Merch form has errors? Exactly. Fix them, then buy."
+                },
+                libra: {
+                    icon: "♎",
+                    name: "Libra",
+                    text: "Stop flirting, start filling the form."
+                },
+                scorpio: {
+                    icon: "♏",
+                    name: "Scorpio",
+                    text: "Plot twist: your enemy already owns EV merch."
+                },
+                sagittarius: {
+                    icon: "♐",
+                    name: "Sagittarius",
+                    text: "You'll book spontaneous trips but won't book merch? Embarrassing."
+                },
+                capricorn: {
+                    icon: "♑",
+                    name: "Capricorn",
+                    text: "Grind all you want. No merch = no legacy."
+                },
+                aquarius: {
+                    icon: "♒",
+                    name: "Aquarius",
+                    text: "You think you're different. You're not. Buy merch."
+                },
+                pisces: {
+                    icon: "♓",
+                    name: "Pisces",
+                    text: "Daydreaming about being aesthetic? EV merch is literally step one."
+                }
+            };
+            
+            // Add staggered animation to cards
+            zodiacCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                card.addEventListener('click', () => {
+                    const sign = card.getAttribute('data-sign');
+                    showResult(sign);
+                });
+            });
+            
+            function showResult(sign) {
+                const data = zodiacData[sign];
+                
+                resultIcon.textContent = data.icon;
+                resultTitle.textContent = data.name;
+                horoscopeText.textContent = data.text;
+                
+                // Position the result container right after the zodiac grid
+                const zodiacGrid = document.querySelector('.zodiac-grid');
+                zodiacGrid.insertAdjacentElement('afterend', result);
+                
+                result.style.display = 'block';
+                
+                // Smooth scroll to the result
+                result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            playAgainBtn.addEventListener('click', () => {
+                result.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
