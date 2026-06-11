@@ -1,0 +1,390 @@
+
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:#f6f8fb;
+  color:#1f2937;
+  line-height:1.5;
+}
+.wrap{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px 16px 48px;
+}
+.header{
+  background:#fff;
+  padding:24px;
+  border-radius:16px;
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+  margin-bottom:20px;
+}
+.header h2{font-size:28px;margin-bottom:6px}
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
+}
+.leg{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  padding:8px 12px;
+  border-radius:999px;
+}
+.dot{width:12px;height:12px;border-radius:50%}
+.month-block{
+  background:#fff;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+.month-label{
+  font-weight:700;
+  margin-bottom:14px;
+  font-size:14px;
+  letter-spacing:.08em;
+}
+.day-row{
+  display:flex;
+  gap:14px;
+  padding:10px 0;
+  border-bottom:1px solid #eef2f7;
+}
+.day-row:last-child{border-bottom:none}
+.day-label{
+  width:90px;
+  flex-shrink:0;
+  font-size:13px;
+}
+.day-label .dow{
+  font-weight:700;
+  font-size:14px;
+}
+.sessions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  flex:1;
+}
+.session{
+  min-width:120px;
+  padding:8px 12px;
+  border-radius:12px;
+  font-weight:600;
+}
+.session .time{
+  display:block;
+  font-size:11px;
+  font-weight:500;
+  margin-top:2px;
+}
+.bloh{background:#e6f1fb;color:#0c447c}
+.ijuh{background:#eaf3de;color:#3b6d11}
+.sebh{background:#faeeda;color:#854f0b}
+.ipeh{background:#eeedfe;color:#3c3489}
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
+  margin-top:20px;
+}
+.sum-card{
+  background:#fff;
+  padding:18px;
+  border-radius:16px;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+.val{font-size:30px;font-weight:700}
+.today-card{background:#fff;padding:18px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.05);margin-bottom:18px}
+.today-card h3{margin-bottom:10px}
+.today-item{padding:8px 0;border-bottom:1px solid #eee}
+.today-item:last-child{border-bottom:none}
+.divider{margin:20px 0}
+
+@media (max-width:768px){
+  .header h2{font-size:22px}
+  .day-row{
+    flex-direction:column;
+    gap:8px;
+  }
+  .day-label{
+    width:auto;
+  }
+  .session{
+    min-width:unset;
+    width:100%;
+  }
+}
+</style>
+
+
+<div class="wrap">
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden">Term IV timetable for Dhruv Badaya, XLRI HRM 2025-27</h2>
+<div class="header">
+  <h2>Term IV — Dhruv Badaya (H25140)</h2>
+  <p>HRM 2025–27 · Section A · 15 Jun – 31 Aug 2026</p>
+</div>
+
+<div id="today-panel"></div><div id="tt"></div>
+
+<div class="divider"></div>
+<div class="summary-grid">
+  <div class="sum-card"><div class="label">BLOH sessions</div><div class="val" id="c-bloh">—</div><div class="sub">Dr Bhattacharyya</div></div>
+  <div class="sum-card"><div class="label">IJUH sessions</div><div class="val" id="c-ijuh">—</div><div class="sub">Dr Onkar Sharma</div></div>
+  <div class="sum-card"><div class="label">SEBH sessions</div><div class="val" id="c-sebh">—</div><div class="sub">Dr Farheen Shaik</div></div>
+  <div class="sum-card"><div class="label">IPEH sessions</div><div class="val" id="c-ipeh">—</div><div class="sub">Kumar Alok</div></div>
+</div>
+</div>
+
+<script>
+const raw = [
+["15-Jun","Mon","04:30 PM","BLOH","Building Learning Organisation","A"],
+["15-Jun","Mon","06:30 PM","IJUH","Industrial Jurisprudence","A"],
+["16-Jun","Tue","08:30 AM","BLOH","Building Learning Organisation","B"],
+["16-Jun","Tue","10:30 AM","IJUH","Industrial Jurisprudence","B"],
+["16-Jun","Tue","12:15 PM","IJUH","Industrial Jurisprudence","A"],
+["17-Jun","Wed","08:30 AM","BLOH","Building Learning Organisation","A"],
+["17-Jun","Wed","10:30 AM","IJUH","Industrial Jurisprudence","A"],
+["17-Jun","Wed","12:15 PM","IJUH","Industrial Jurisprudence","B"],
+["17-Jun","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["17-Jun","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["17-Jun","Wed","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["18-Jun","Thu","08:30 AM","IJUH","Industrial Jurisprudence","A"],
+["18-Jun","Thu","08:15 PM","IJUH","Industrial Jurisprudence","B"],
+["19-Jun","Fri","08:30 AM","BLOH","Building Learning Organisation","A"],
+["19-Jun","Fri","08:30 AM","IJUH","Industrial Jurisprudence","B"],
+["19-Jun","Fri","10:30 AM","BLOH","Building Learning Organisation","B"],
+["19-Jun","Fri","10:30 AM","IJUH","Industrial Jurisprudence","A"],
+["19-Jun","Fri","02:45 PM","SEBH","Staffing & Employer Branding","B"],
+["19-Jun","Fri","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["19-Jun","Fri","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["20-Jun","Sat","08:30 AM","BLOH","Building Learning Organisation","A"],
+["20-Jun","Sat","10:30 AM","BLOH","Building Learning Organisation","B"],
+["22-Jun","Mon","08:30 AM","BLOH","Building Learning Organisation","A"],
+["22-Jun","Mon","02:45 PM","BLOH","Building Learning Organisation","B"],
+["23-Jun","Tue","10:30 AM","BLOH","Building Learning Organisation","B"],
+["23-Jun","Tue","12:15 PM","BLOH","Building Learning Organisation","A"],
+["24-Jun","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["24-Jun","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["24-Jun","Wed","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["26-Jun","Fri","08:30 AM","BLOH","Building Learning Organisation","A"],
+["26-Jun","Fri","10:30 AM","BLOH","Building Learning Organisation","B"],
+["26-Jun","Fri","02:45 PM","SEBH","Staffing & Employer Branding","B"],
+["26-Jun","Fri","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["26-Jun","Fri","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["27-Jun","Sat","08:30 AM","BLOH","Building Learning Organisation","B"],
+["27-Jun","Sat","10:30 AM","BLOH","Building Learning Organisation","A"],
+["29-Jun","Mon","08:15 PM","IJUH","Industrial Jurisprudence","B"],
+["30-Jun","Tue","08:30 AM","IJUH","Industrial Jurisprudence","A"],
+["01-Jul","Wed","08:30 AM","IJUH","Industrial Jurisprudence","B"],
+["01-Jul","Wed","10:30 AM","IJUH","Industrial Jurisprudence","A"],
+["01-Jul","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["01-Jul","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["01-Jul","Wed","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["02-Jul","Thu","08:30 AM","IJUH","Industrial Jurisprudence","A"],
+["02-Jul","Thu","10:30 AM","IJUH","Industrial Jurisprudence","B"],
+["03-Jul","Fri","08:30 AM","IJUH","Industrial Jurisprudence","A"],
+["03-Jul","Fri","10:30 AM","IJUH","Industrial Jurisprudence","B"],
+["03-Jul","Fri","02:45 PM","SEBH","Staffing & Employer Branding","B"],
+["03-Jul","Fri","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["03-Jul","Fri","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["04-Jul","Sat","08:30 AM","IJUH","Industrial Jurisprudence","B"],
+["04-Jul","Sat","10:30 AM","IJUH","Industrial Jurisprudence","A"],
+["07-Jul","Tue","08:30 AM","BLOH","Building Learning Organisation","A"],
+["07-Jul","Tue","10:30 AM","BLOH","Building Learning Organisation","B"],
+["08-Jul","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["08-Jul","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["08-Jul","Wed","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["09-Jul","Thu","08:30 AM","BLOH","Building Learning Organisation","B"],
+["09-Jul","Thu","10:30 AM","BLOH","Building Learning Organisation","A"],
+["10-Jul","Fri","08:30 AM","BLOH","Building Learning Organisation","A"],
+["10-Jul","Fri","10:30 AM","BLOH","Building Learning Organisation","B"],
+["10-Jul","Fri","02:45 PM","SEBH","Staffing & Employer Branding","B"],
+["10-Jul","Fri","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["10-Jul","Fri","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["11-Jul","Sat","08:30 AM","BLOH","Building Learning Organisation","A"],
+["11-Jul","Sat","10:30 AM","BLOH","Building Learning Organisation","B"],
+["13-Jul","Mon","08:30 AM","BLOH","Building Learning Organisation","A"],
+["13-Jul","Mon","08:30 AM","IJUH","Industrial Jurisprudence","B"],
+["13-Jul","Mon","02:45 PM","BLOH","Building Learning Organisation","B"],
+["13-Jul","Mon","08:15 PM","IJUH","Industrial Jurisprudence","A"],
+["14-Jul","Tue","08:30 AM","IJUH","Industrial Jurisprudence","A"],
+["14-Jul","Tue","08:15 PM","IJUH","Industrial Jurisprudence","B"],
+["15-Jul","Wed","08:30 AM","IJUH","Industrial Jurisprudence","A"],
+["15-Jul","Wed","10:30 AM","IJUH","Industrial Jurisprudence","B"],
+["15-Jul","Wed","12:15 PM","BLOH","Building Learning Organisation","B"],
+["15-Jul","Wed","02:45 PM","BLOH","Building Learning Organisation","A"],
+["15-Jul","Wed","02:45 PM","SEBH","Staffing & Employer Branding","B"],
+["15-Jul","Wed","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["15-Jul","Wed","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["16-Jul","Thu","08:30 AM","IJUH","Industrial Jurisprudence","B"],
+["16-Jul","Thu","08:15 PM","IJUH","Industrial Jurisprudence","A"],
+["17-Jul","Fri","08:30 AM","BLOH","Building Learning Organisation","A"],
+["17-Jul","Fri","10:30 AM","BLOH","Building Learning Organisation","B"],
+["17-Jul","Fri","02:45 PM","IJUH","Industrial Jurisprudence","B"],
+["17-Jul","Fri","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["17-Jul","Fri","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["17-Jul","Fri","06:30 PM","IJUH","Industrial Jurisprudence","A"],
+["17-Jul","Fri","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["18-Jul","Sat","08:30 AM","BLOH","Building Learning Organisation","A"],
+["18-Jul","Sat","10:30 AM","BLOH","Building Learning Organisation","B"],
+["20-Jul","Mon","08:30 AM","BLOH","Building Learning Organisation","A"],
+["20-Jul","Mon","10:30 AM","BLOH","Building Learning Organisation","B"],
+["22-Jul","Wed","08:30 AM","BLOH","Building Learning Organisation","B"],
+["22-Jul","Wed","10:30 AM","BLOH","Building Learning Organisation","A"],
+["22-Jul","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["22-Jul","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["22-Jul","Wed","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["24-Jul","Fri","08:30 AM","BLOH","Building Learning Organisation","A"],
+["24-Jul","Fri","10:30 AM","BLOH","Building Learning Organisation","B"],
+["24-Jul","Fri","02:45 PM","SEBH","Staffing & Employer Branding","B"],
+["24-Jul","Fri","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["24-Jul","Fri","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["25-Jul","Sat","08:30 AM","BLOH","Building Learning Organisation","B"],
+["25-Jul","Sat","10:30 AM","BLOH","Building Learning Organisation","A"],
+["29-Jul","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["29-Jul","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["29-Jul","Wed","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["05-Aug","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["05-Aug","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["05-Aug","Wed","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["07-Aug","Fri","02:45 PM","SEBH","Staffing & Employer Branding","B"],
+["07-Aug","Fri","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["07-Aug","Fri","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["10-Aug","Mon","08:30 AM","IJUH","Industrial Jurisprudence","A"],
+["10-Aug","Mon","08:15 PM","IJUH","Industrial Jurisprudence","B"],
+["11-Aug","Tue","08:30 AM","IJUH","Industrial Jurisprudence","B"],
+["11-Aug","Tue","08:15 PM","IJUH","Industrial Jurisprudence","A"],
+["12-Aug","Wed","02:45 PM","IJUH","Industrial Jurisprudence","A"],
+["12-Aug","Wed","06:30 PM","IJUH","Industrial Jurisprudence","B"],
+["12-Aug","Wed","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["13-Aug","Thu","08:30 AM","IJUH","Industrial Jurisprudence","A"],
+["13-Aug","Thu","08:15 PM","IJUH","Industrial Jurisprudence","B"],
+["14-Aug","Fri","08:30 AM","IJUH","Industrial Jurisprudence","B"],
+["14-Aug","Fri","02:45 PM","SEBH","Staffing & Employer Branding","B"],
+["14-Aug","Fri","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["14-Aug","Fri","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["14-Aug","Fri","08:15 PM","IJUH","Industrial Jurisprudence","A"],
+["19-Aug","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["19-Aug","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["19-Aug","Wed","06:30 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["21-Aug","Fri","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["21-Aug","Fri","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["21-Aug","Fri","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["26-Aug","Wed","02:45 PM","SEBH","Staffing & Employer Branding","A"],
+["26-Aug","Wed","04:30 PM","SEBH","Staffing & Employer Branding","B"],
+["26-Aug","Wed","08:15 PM","IPEH","Indian Philosophy for Leadership","ABCD"],
+["28-Aug","Fri","04:30 PM","SEBH","Staffing & Employer Branding","A"],
+["28-Aug","Fri","06:30 PM","SEBH","Staffing & Employer Branding","B"],
+];
+
+const mySection = {BLOH:"A",IJUH:"A",SEBH:"A",IPEH:"ABCD"};
+
+function isMyClass(row){
+  const sec = row[5];
+  const course = row[3];
+  const mine = mySection[course];
+  if(!mine) return false;
+  if(mine==="ABCD") return true;
+  return sec===mine || sec==="ABCD";
+}
+
+const filtered = raw.filter(isMyClass);
+
+const counts = {BLOH:0,IJUH:0,SEBH:0,IPEH:0};
+filtered.forEach(r=>counts[r[3]]++);
+document.getElementById("c-bloh").textContent=counts.BLOH;
+document.getElementById("c-ijuh").textContent=counts.IJUH;
+document.getElementById("c-sebh").textContent=counts.SEBH;
+document.getElementById("c-ipeh").textContent=counts.IPEH;
+
+const monthOrder = ["Jun","Jul","Aug"];
+const monthNames = {Jun:"June 2026",Jul:"July 2026",Aug:"August 2026"};
+
+const byDay = {};
+filtered.forEach(r=>{
+  const key = r[0]+"|"+r[1];
+  if(!byDay[key]) byDay[key]=[];
+  byDay[key].push(r);
+});
+
+const dayKeys = Object.keys(byDay).sort((a,b)=>{
+  const [da]=a.split("|"); const [db]=b.split("|");
+  const [dna,mna]=da.split("-"); const [dnb,mnb]=db.split("-");
+  const mi = monthOrder.indexOf(mna); const mj = monthOrder.indexOf(mnb);
+  if(mi!==mj) return mi-mj;
+  return parseInt(dna)-parseInt(dnb);
+});
+
+const byMonth = {};
+dayKeys.forEach(k=>{
+  const [d]=k.split("|"); const mo=d.split("-")[1];
+  if(!byMonth[mo]) byMonth[mo]=[];
+  byMonth[mo].push(k);
+});
+
+const cmap = {BLOH:"bloh",IJUH:"ijuh",SEBH:"sebh",IPEH:"ipeh"};
+const shortName = {BLOH:"BLOH",IJUH:"IJUH",SEBH:"SEBH",IPEH:"IPEH"};
+
+const container = document.getElementById("tt");
+monthOrder.forEach(mo=>{
+  if(!byMonth[mo]) return;
+  const mb = document.createElement("div");
+  mb.className="month-block";
+  mb.innerHTML=`<div class="month-label">${monthNames[mo]}</div>`;
+  byMonth[mo].forEach(k=>{
+    const [dateStr,dow]=k.split("|");
+    const [dn]=dateStr.split("-");
+    const sessions = byDay[k];
+    const row = document.createElement("div");
+    row.className="day-row";
+    row.innerHTML=`<div class="day-label"><span class="dow">${dow}</span><br>${dn} ${mo}</div>`;
+    const sess = document.createElement("div");
+    sess.className="sessions";
+    sessions.sort((a,b)=>{
+      const ta=a[2], tb=b[2];
+      const to12 = t=>{const [h,rest]=t.split(":");const [m,ap]=rest.split(" ");let hr=parseInt(h);if(ap==="PM"&&hr!==12)hr+=12;if(ap==="AM"&&hr===12)hr=0;return hr*60+parseInt(m);};
+      return to12(ta)-to12(tb);
+    });
+    sessions.forEach(s=>{
+      const chip = document.createElement("div");
+      chip.className=`session ${cmap[s[3]]}`;
+      chip.innerHTML=`${shortName[s[3]]}<span class="time">${s[2]}</span>`;
+      sess.appendChild(chip);
+    });
+    row.appendChild(sess);
+    mb.appendChild(row);
+  });
+  container.appendChild(mb);
+});
+
+const panel=document.getElementById('today-panel');
+const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+const now=new Date();
+const todayKey=String(now.getDate()).padStart(2,'0')+'-'+Object.keys(months)[now.getMonth()];
+const tm=new Date(now); tm.setDate(now.getDate()+1);
+const tomorrowKey=String(tm.getDate()).padStart(2,'0')+'-'+Object.keys(months)[tm.getMonth()];
+
+function classesFor(dayKey){
+ return filtered.filter(r=>r[0]===dayKey)
+ .sort((a,b)=>a[2].localeCompare(b[2]));
+}
+const todayClasses=classesFor(todayKey);
+const tomorrowClasses=classesFor(tomorrowKey);
+
+panel.innerHTML=`
+<div class="today-card">
+<h3>Today's Classes</h3>
+${todayClasses.length?todayClasses.map(c=>`<div class="today-item"><strong>${c[3]}</strong> • ${c[2]}</div>`).join(''):'<div>No classes today</div>'}
+</div>
+<div class="today-card">
+<h3>Tomorrow's Classes</h3>
+${tomorrowClasses.length?tomorrowClasses.map(c=>`<div class="today-item"><strong>${c[3]}</strong> • ${c[2]}</div>`).join(''):'<div>No classes tomorrow</div>'}
+</div>`;
+
+</script>
